@@ -24,7 +24,6 @@ header {
     font-family: inherit;
     font-size: 1rem;
     padding: 0.5rem rem;
-    margin-right: 7rem;
 }
 .search::placeholder{
     color: #7378c5;
