@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie App</title>
+    <title>Now App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <form id="form">
-            <input type="text" id="search" placeholder="search" class="search" />
-        </form>
+        <a href="/">NOW</a>
+        <a href="/Movies">Movies</a>
+        <a href="/Tv">TV</a>
     </header>
-    <main id="main"></main>    
+    <main id="main">Hello</main>    
+
+    <script id="default-template" type="text/handlebars-template">
+        <p> Default</p>
+        <div id="results"></div>
+    </script>
+
+    <script id="movies-template" type="text/handlebars-template">
+        <div id="results"></div>
+    </script>
+
+    <script id="tv-template" type="text/handlebars-template">
+        <div id="results"></div>
+    </script>
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-router@1.2.8/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
 <script src="script.js"></script>
+
 
 </html>
