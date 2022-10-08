@@ -9,16 +9,29 @@
 </head>
 <body>
     <header>
-        <a href="/">NOW</a>
+        <a href="#">NOW</a>
         <a href="/Movies">Movies</a>
         <a href="/Tv">TV</a>
     </header>
-    <main id="main">Hello</main>    
-
-    <script id="default-template" type="text/handlebars-template">
-        <p> Default</p>
-        <div id="results"></div>
-    </script>
+    <div id="main">
+        <div id="movie-section">
+            <img src="/Images/Cinema.jpg">
+            <div class="overlay">
+                <p><a href="/Movies"> Movies </a></p>
+            </div>
+        </div>
+        <div id="intro-section">
+            <h1>Looking for something <br> new to watch</h1>
+            <h1>&lt;&lt;&lt;Movies</h1>
+            <h1>TV Shows &gt;&gt;&gt;</h1>
+        </div>
+        <div id="tv-section">
+            <img src="/Images/tv.jpg">
+            <div class="overlay">
+                <p><a href="/Tv">TV</a></p>
+            </div>
+        </div>
+    </div>
 
     <script id="movies-template" type="text/handlebars-template">
         <div id="results"></div>

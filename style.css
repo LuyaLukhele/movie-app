@@ -18,7 +18,6 @@ header {
 
 a {
     text-decoration: none;
-    
     color: white;
     display: inline-block;
     margin-right: 1em;
@@ -44,10 +43,11 @@ a {
     outline: none;
 }
 
-main {
+#main {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
+    
 }
 
 .movie {
@@ -115,3 +115,50 @@ main {
 .movie:hover .overview {
     transform: translateY(0);
 }
+
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 500px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+  }
+
+
+#movie-section, #tv-section{
+    margin-top: 20px;
+    position: relative;
+}
+
+#movie-section p, #tv-section p{
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+#movie-section:hover .overlay, #tv-section:hover .overlay
+, #movie-section:active .overlay, #tv-section:active .overlay {
+    opacity: 0.9;
+}
+
+#movie-section img, #tv-section img{
+    height: 500px;
+    border-radius: 1%;
+    display: block;
+    
+}
+
+#intro-section{
+    color: white;
+}
+

@@ -7,7 +7,7 @@ const SERIESAPI = "https://api.themoviedb.org/3/tv/popular?api_key=04c35731a5ee9
 window.addEventListener('load', () => {
     const app = $('#main');
   
-    const defaultTemplate = Handlebars.compile($('#default-template').html());
+    const defaultTemplate = Handlebars.compile($('#main').html());
     const moviesTemplate = Handlebars.compile($('#movies-template').html());
     const tvTemplate = Handlebars.compile($('#tv-template').html());
 
@@ -66,13 +66,13 @@ async function getTV(url) {
 function showTV(tvShows) {
     main.innerHTML = "";
 
-    tvShows.forEach((movie) => {
-        const {poster_path, name, vote_average, overview} = movie;
+    tvShows.forEach((tv) => {
+        const {poster_path, name, vote_average, overview} = tv;
 
-        const movieEl = document.createElement("div");
-        movieEl.classList.add("movie");
+        const tvEl = document.createElement("div");
+        tvEl.classList.add("movie");
 
-        movieEl.innerHTML = `
+        tvEl.innerHTML = `
             <img src="${IMGPATH + poster_path}" alt="${name}"/>
             <div class="movie-info">
                 <h3>${name}</h3>
@@ -84,7 +84,7 @@ function showTV(tvShows) {
             </div>
             `;
 
-        main.appendChild(movieEl);
+        main.appendChild(tvEl);
     });
 };
 
