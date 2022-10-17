@@ -75,19 +75,34 @@ async function getTrending(url) {
     showTrending(respData.results);
 };
 
+function getClassByRate(vote) {
+    if (vote >= 7.5) {
+        return "green";
+    }else if (vote >=5) {
+        return "orange";
+    }else {
+        return "red";
+    }
+};
 
 function showTrending(trending) {
     main.innerHTML = "";
 
     trending.forEach((tv) => {
-        const {poster_path, name, vote_average, overview} = tv;
+        let {poster_path, name, vote_average, overview, title} = tv;
 
         const tvEl = document.createElement("div");
         tvEl.classList.add("movie");
+        
+        if (name == undefined){
+            name = title
+        }
+        vote_average = Math.round(vote_average * 10) / 10
 
         tvEl.innerHTML = `
             <img src="${IMGPATH + poster_path}" alt="${name}"/>
             <div class="movie-info">
+                
                 <h3>${name}</h3>
                 <span class="${getClassByRate(vote_average)}">${vote_average}</span>
             </div>
@@ -153,15 +168,7 @@ function showMovies(movies) {
     });
 };
 
-function getClassByRate(vote) {
-    if (vote >= 7.5) {
-        return "green";
-    }else if (vote >=5) {
-        return "orange";
-    }else {
-        return "red";
-    }
-};
+
 
 
 function showMovies(movies) {
