@@ -3,6 +3,8 @@ const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.d
 const IMGPATH = "https://image.tmdb.org/t/p/w1280";
 const SERIESAPI = "https://api.themoviedb.org/3/tv/popular?api_key=04c35731a5ee918f014970082a0088b1&page=1"
 const TrendAPI = "https://api.themoviedb.org/3/trending/all/week?api_key=04c35731a5ee918f014970082a0088b1"
+let i;
+// 04c35731a5ee918f014970082a0088b1
 
 window.addEventListener('load', () => {
     const app = $('#main');
@@ -61,6 +63,13 @@ async function getMovies(url) {
     showMovies(respData.results);
 };
 
+async function getReviews(url, movieId) {
+    const resp = await fetch(url);
+    const respData = await resp.json();
+
+    Reviews(respData.results, movieId);
+};
+
 async function getTV(url) {
     const resp = await fetch(url);
     const respData = await resp.json();
@@ -100,15 +109,16 @@ function showTrending(trending) {
         vote_average = Math.round(vote_average * 10) / 10
 
         tvEl.innerHTML = `
+        <div class="myImage">
             <img src="${IMGPATH + poster_path}" alt="${name}"/>
-            <div class="movie-info">
-                
-                <h3>${name}</h3>
-                <span class="${getClassByRate(vote_average)}">${vote_average}</span>
-            </div>
             <div class="overview">
             <h3>${name}: </h3>
                 ${overview}
+            </div>
+        </div>
+            <div class="movie-info">
+                <h3>${name}</h3>
+                <span class="${getClassByRate(vote_average)}">${vote_average}</span>
             </div>
             `;
 
@@ -142,52 +152,102 @@ function showTV(tvShows) {
     });
 };
 
-  
 function showMovies(movies) {
     main.innerHTML = "";
+    btnId = 0;
 
     movies.forEach((movie) => {
-        const {poster_path, title, vote_average, overview} = movie;
-
+        const {poster_path, title, vote_average, overview, id} = movie;
+        // getReviews(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=04c35731a5ee918f014970082a0088b1&page=1`)
         const movieEl = document.createElement("div");
         movieEl.classList.add("movie");
 
         movieEl.innerHTML = `
+        <div class="myImage">
             <img src="${IMGPATH + poster_path}" alt="${title}"/>
-            <div class="movie-info">
-                <h3>${title}</h3>
-                <span class="${getClassByRate(vote_average)}">${vote_average}</span>
-            </div>
             <div class="overview">
             <h3>${title}: </h3>
                 ${overview}
             </div>
-            `;
-
-        main.appendChild(movieEl);
-    });
-};
-
-
-
-
-function showMovies(movies) {
-    main.innerHTML = "";
-
-    movies.forEach((movie) => {
-        const {poster_path, title, vote_average, overview} = movie;
-
-        const movieEl = document.createElement("div");
-        movieEl.classList.add("movie");
-
-        movieEl.innerHTML = `
-            <img src="${IMGPATH + poster_path}" alt="${title}"/>
+            </div>
             <div class="movie-info">
-                <h3><a href='#'>${title}</a></h3>
+            <a id="myBtn" data-Bid="${id}"> <h3>${title}</h3> </a> 
                 <span class="${getClassByRate(vote_average)}">${vote_average}</span>
+    
+            </div>
+            <div class="review-details">
+            <!-- The Modal -->
+                <div id="myModal" data-Mid="${id}" class="modal">
+                <div id= "comments">
+                </div> 
             </div>
             `;
-
+        btnId += 1;
         main.appendChild(movieEl);
     });
+
+        // Get the modal
+        var modal;
+            
+        // When the user clicks the button, open the modal 
+
+        $(document).on('click','#myBtn',function(){
+            i = this.dataset.bid;
+            getReviews(`https://api.themoviedb.org/3/movie/${i}/reviews?api_key=04c35731a5ee918f014970082a0088b1&page=1`, i)
+            modal = document.querySelector(`[data-Mid='${i}']`);
+            modal.style.display = "block";
+            
+        })
+};
+
+function Reviews(moviesReviews, movieId) {
+    comments.innerHTML = "";
+    const movieRl = document.querySelector(`[data-Mid='${i}']`);
+    if (moviesReviews.length == 0){
+        
+        movieRl.innerHTML = `
+        <!-- Modal content -->
+                <div class="modal-content">
+                <div class="modal-header">
+                <p> No Reviews yet <span class="close">&times;</span></p>
+                </div>                    
+            `;
+    }
+    else{
+        moviesReviews.forEach((review) => {
+            const {author, content} = review;
+            movieRl.innerHTML = `
+            <!-- Modal content -->
+                    <div class="modal-content">
+                    <div class="modal-header">
+                    <p> Author: ${author} <span class="close">&times;</span></p>
+                        </div>
+                        <div class="modal-body">
+                        <p>${content}</p>
+                        </div>
+                    </div> 
+                `;
+        // comments.appendChild(movieRl);        
+        });
+    }
+    
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+
+    var modal = document.querySelector(`[data-Mid='${movieId}']`);
+    modal.style.display = "block";
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 };

@@ -74,6 +74,7 @@ a {
 }
 
 .movie-info h3 {
+    cursor: pointer;
     margin: 0;
 }
 
@@ -102,9 +103,9 @@ a {
     max-height: 100%;
     overflow: auto;
     left: 0;
-    bottom: 0;
+    top: 0;
     right: 0;
-    transform: translateY(101%);
+    transform: translateY(-101%);
     transition: transform 0.3s ease-in;
 }
 
@@ -112,7 +113,7 @@ a {
     margin-top: 0;
 }
 
-.movie:hover .overview {
+.myImage:hover .overview {
     transform: translateY(0);
 }
 
