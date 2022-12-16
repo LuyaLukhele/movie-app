@@ -1,7 +1,7 @@
 
 const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
 const IMGPATH = "https://image.tmdb.org/t/p/w1280";
-const SERIESAPI = "https://api.themoviedb.org/3/tv/popular?api_key=04c35731a5ee918f014970082a0088b1&page=1"
+const SERIESAPI = "https://api.themoviedb.org/3/discover/tv?api_key=04c35731a5ee918f014970082a0088b1&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=7&include_null_first_air_dates=false&with_original_language=en"
 const TrendAPI = "https://api.themoviedb.org/3/trending/all/week?api_key=04c35731a5ee918f014970082a0088b1"
 let i;
 // 04c35731a5ee918f014970082a0088b1
@@ -131,25 +131,47 @@ function showTV(tvShows) {
     main.innerHTML = "";
 
     tvShows.forEach((tv) => {
-        const {poster_path, name, vote_average, overview} = tv;
+        const {poster_path, name, vote_average, overview, id} = tv;
 
         const tvEl = document.createElement("div");
         tvEl.classList.add("movie");
 
         tvEl.innerHTML = `
+        <div class="myImage">
             <img src="${IMGPATH + poster_path}" alt="${name}"/>
-            <div class="movie-info">
-                <h3>${name}</h3>
-                <span class="${getClassByRate(vote_average)}">${vote_average}</span>
-            </div>
             <div class="overview">
-            <h3>${name}: </h3>
-                ${overview}
+                <h3>${name}: </h3>
+                    ${overview}
             </div>
+            </div>
+            <div class="movie-info">
+                <a id="myBtn" data-Bid="${id}"> <h3>${name}</h3> </a> 
+                    <span class="${getClassByRate(vote_average)}">${vote_average}</span>
+
+            </div>
+            <div class="review-details">
+            <!-- The Modal -->
+                <div id="myModal" data-Mid="${id}" class="modal">
+                <div id= "comments">
+                </div> 
+        </div>
             `;
 
         main.appendChild(tvEl);
     });
+
+    // Get the modal
+    var tvModal;
+            
+    // When the user clicks the button, open the modal 
+
+    $(document).on('click','#myBtn',function(){
+        i = this.dataset.bid;
+        getReviews(`https://api.themoviedb.org/3/tv/${i}/reviews?api_key=04c35731a5ee918f014970082a0088b1&page=1`, i)
+        tvModal = document.querySelector(`[data-Mid='${i}']`);
+        tvModal.style.display = "block";
+        
+    })
 };
 
 function showMovies(movies) {
@@ -182,7 +204,6 @@ function showMovies(movies) {
                 </div> 
             </div>
             `;
-        btnId += 1;
         main.appendChild(movieEl);
     });
 
@@ -210,7 +231,7 @@ function Reviews(moviesReviews, movieId) {
                 <div class="modal-content">
                 <div class="modal-header">
                 <p> No Reviews yet <span class="close">&times;</span></p>
-                </div>                    
+        </div>                    
             `;
     }
     else{
