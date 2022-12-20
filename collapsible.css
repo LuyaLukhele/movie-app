@@ -1,0 +1,71 @@
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: #373b69;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 95%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .collapsible:hover {
+    background-color: #22254b;
+  }
+  
+  /* Style the collapsible content. Note: hidden by default */
+  .content {
+    width: 95%;
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+  }
+
+  .collapsible:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 5px;
+  }
+  
+  .active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+  }
+
+  .search-movie-info {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem 1rem;
+    letter-spacing: 0.5px;
+}
+
+.search-movie-info h3 {
+    cursor: pointer;
+    margin: 0;
+}
+
+.search-movie-info span {
+    background-color: #22254b;
+    border-radius: 3px;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+}
+
+.search-movie-info span.green {
+    color: rgb(39, 189, 39);
+}
+
+.search-movie-info span.orange {
+    color: orange;
+}
+.search-movie-info span.red {
+    color: rgb(189, 42, 42);
+}

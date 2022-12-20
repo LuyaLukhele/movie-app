@@ -3,6 +3,7 @@ const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.d
 const IMGPATH = "https://image.tmdb.org/t/p/w1280";
 const SERIESAPI = "https://api.themoviedb.org/3/discover/tv?api_key=04c35731a5ee918f014970082a0088b1&language=en-US&sort_by=popularity.desc&page=1&vote_average.gte=7&include_null_first_air_dates=false&with_original_language=en"
 const TrendAPI = "https://api.themoviedb.org/3/trending/all/week?api_key=04c35731a5ee918f014970082a0088b1"
+const SEARCHAPI = "https://api.themoviedb.org/3/search/multi?api_key=04c35731a5ee918f014970082a0088b1&language=en-US&query=";
 let i;
 // 04c35731a5ee918f014970082a0088b1
 
@@ -13,6 +14,8 @@ window.addEventListener('load', () => {
     const moviesTemplate = Handlebars.compile($('#movies-template').html());
     const tvTemplate = Handlebars.compile($('#tv-template').html());
 
+    const form = document.getElementById("form");
+    const search = document.getElementById("search");
 
     const router = new Router({
       mode:'hash',
@@ -97,11 +100,24 @@ function getClassByRate(vote) {
 function showTrending(trending) {
     main.innerHTML = "";
 
+    se.innerHTML = "";
+
+    const searchItems = document.createElement("div");
+        searchItems.classList.add("searching");
+
+        searchItems.innerHTML = `
+        <form id="form">
+            <input type="text" id="search" placeholder="search" class="search" />
+        </form>
+        `;
+        se.appendChild(searchItems);
+
     trending.forEach((tv) => {
         let {poster_path, name, vote_average, overview, title} = tv;
 
-        const tvEl = document.createElement("div");
-        tvEl.classList.add("movie");
+        if(poster_path != undefined){
+            const tvEl = document.createElement("div");
+        tvEl.classList.add("search-movie");
         
         if (name == undefined){
             name = title
@@ -109,26 +125,69 @@ function showTrending(trending) {
         vote_average = Math.round(vote_average * 10) / 10
 
         tvEl.innerHTML = `
-        <div class="myImage">
+
+        <div class="searchImage">
             <img src="${IMGPATH + poster_path}" alt="${name}"/>
-            <div class="overview">
-            <h3>${name}: </h3>
-                ${overview}
-            </div>
         </div>
-            <div class="movie-info">
+
+        <div class="overview-side">
+        <div class="search-movie-info">
                 <h3>${name}</h3>
                 <span class="${getClassByRate(vote_average)}">${vote_average}</span>
             </div>
+            <button type="button" class="collapsible">Description</button>
+            <div class="content">
+                ${overview}
+            </div>
+            <button type="button" class="collapsible">Similar</button>
+            <div class="content">
+                <h3>Comming soon </h3>
+                
+            </div>
+            <button type="button" class="collapsible">Videos</button>
+            <div class="content">
+                <h3>Comming soon </h3>
+            </div>
+
+        </div>
             `;
 
         main.appendChild(tvEl);
+        }
     });
-};
 
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+    
+        const searchTerms = search.value;
+    
+        if(searchTerms) {
+            getTrending(SEARCHAPI + searchTerms);
+    
+            search.value = "";
+        }
+    });
+
+    var coll = document.getElementsByClassName("collapsible");
+    var c;
+    
+    for (c = 0; c < coll.length; c++) {
+      coll[c].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+
+};
 
 function showTV(tvShows) {
     main.innerHTML = "";
+    se.innerHTML = "<p> Trending TV </p>";
 
     tvShows.forEach((tv) => {
         const {poster_path, name, vote_average, overview, id} = tv;
@@ -176,6 +235,7 @@ function showTV(tvShows) {
 
 function showMovies(movies) {
     main.innerHTML = "";
+    se.innerHTML = "<p> Trending Movies </p>";
     btnId = 0;
 
     movies.forEach((movie) => {

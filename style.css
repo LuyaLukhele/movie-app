@@ -24,22 +24,29 @@ a {
     
 }
 
+#se {
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+}
+
 .search {
-    background-color: transparent;
+    background-color: white;
     border: 2px solid #22254b;
     border-radius: 50px;
-    color: #fff;
+    color: #22254b;
     font-family: inherit;
     font-size: 1rem;
     padding: 0.5rem rem;
-    margin-top: 0.7em;
+    margin-top: 2rem;
+    text-align: center;
 }
 .search::placeholder{
-    color: white;
+    color: #22254b;
 }
 
 .search:focus {
-    background-color: #22254b;
+    background-color: #fff;
     outline: none;
 }
 
@@ -119,7 +126,7 @@ a {
 
 
 
-.overlay {
+/* .overlay {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -129,9 +136,9 @@ a {
     opacity: 0;
     transition: .5s ease;
     background-color: #008CBA;
-  }
+  } */
 
-
+/* 
 #movie-section, #tv-section{
     margin-top: 20px;
     position: relative;
@@ -157,9 +164,35 @@ a {
     border-radius: 1%;
     display: block;
     
-}
+} */
 
 #intro-section{
     color: white;
 }
 
+.overview-side {
+    flex-grow: 8;
+    background-color: #fff;
+    padding: 2rem;
+    max-height: 100%;
+    min-width: 60rem;
+}
+
+.search-movie {
+    display: flex;
+    background-color: #373b69;
+    border-radius: 3px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+    margin: 1rem;
+}
+
+.search-movie img{
+    width: 25em;
+    height: 35em;
+}
+
+.searchImage{
+    height: 35rem;
+}
