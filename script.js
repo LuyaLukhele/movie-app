@@ -73,6 +73,20 @@ async function getReviews(url, movieId) {
     Reviews(respData.results, movieId);
 };
 
+async function getVideos(url, movieId) {
+    
+    let resp = await fetch(url);
+
+    if (!resp.ok){
+        resp = await fetch(`https://api.themoviedb.org/3/tv/${movieId}/videos?api_key=04c35731a5ee918f014970082a0088b1&language=en-US`);
+    }
+
+    const respData = await resp.json();
+
+    Videos(respData.results, movieId);
+
+};
+
 async function getTV(url) {
     const resp = await fetch(url);
     const respData = await resp.json();
@@ -113,7 +127,7 @@ function showTrending(trending) {
         se.appendChild(searchItems);
 
     trending.forEach((tv) => {
-        let {poster_path, name, vote_average, overview, title} = tv;
+        let {poster_path, name, vote_average, overview, title, id} = tv;
 
         if(poster_path != undefined){
             const tvEl = document.createElement("div");
@@ -139,16 +153,15 @@ function showTrending(trending) {
             <div class="content">
                 ${overview}
             </div>
-            <button type="button" class="collapsible">Similar</button>
-            <div class="content">
-                <h3>Comming soon </h3>
-                
+            <button type="button" class="collapsible" id="videos" data-Bid="${id}">Trailers & Clips</button>
+            
+            <div id="videoContent" class="content"> 
+                <div id="videoContent-${id}"> 
+                    <p> Coming soon </p>
+                </div>
             </div>
-            <button type="button" class="collapsible">Videos</button>
-            <div class="content">
-                <h3>Comming soon </h3>
-            </div>
-
+            
+           
         </div>
             `;
 
@@ -158,12 +171,9 @@ function showTrending(trending) {
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-    
         const searchTerms = search.value;
-    
         if(searchTerms) {
             getTrending(SEARCHAPI + searchTerms);
-    
             search.value = "";
         }
     });
@@ -183,11 +193,17 @@ function showTrending(trending) {
       });
     }
 
+    $(document).on('click','#videos',function(){
+        i = this.dataset.bid;
+        getVideos(`https://api.themoviedb.org/3/movie/${i}/videos?api_key=04c35731a5ee918f014970082a0088b1&language=en-US`, i);
+                  
+    })
+
 };
 
 function showTV(tvShows) {
     main.innerHTML = "";
-    se.innerHTML = "<p> Trending TV </p>";
+    se.innerHTML = "<h1>Trending TV </h1>";
 
     tvShows.forEach((tv) => {
         const {poster_path, name, vote_average, overview, id} = tv;
@@ -235,7 +251,7 @@ function showTV(tvShows) {
 
 function showMovies(movies) {
     main.innerHTML = "";
-    se.innerHTML = "<p> Trending Movies </p>";
+    se.innerHTML = "<h1> Trending Movies </h1>";
     btnId = 0;
 
     movies.forEach((movie) => {
@@ -330,5 +346,32 @@ function Reviews(moviesReviews, movieId) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
+};
+
+
+function Videos(moviesClips, movieId) {
+    videoContent.innerHTML = "";
+    console.log(moviesClips);
+    const videoEL = document.querySelector(`#videoContent-${movieId}`);
+    if (moviesClips == undefined){
+        videoEL.innerHTML = `
+        <div>
+            <p>No Clips available </p>
+        </div>                    
+            `;
+    }
+    else{
+        moviesClips.forEach((review) => {
+            const {name, key} = review;
+            videoEL.innerHTML = `
+            <iframe width="250" height="250" src="https://www.youtube.com/embed/${key}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            
+            <div>
+                ${name}
+            </div>
+                `;
+            // videoContent.appendChild(videoEL);        
+        });
     }
 };
