@@ -180,23 +180,24 @@ function showTrending(trending) {
 
     var coll = document.getElementsByClassName("collapsible");
     var c;
-    
+    var content
     for (c = 0; c < coll.length; c++) {
       coll[c].addEventListener("click", function() {
         this.classList.toggle("active");
-        var content = this.nextElementSibling;
+        content = this.nextElementSibling;
         if (content.style.maxHeight){
           content.style.maxHeight = null;
         } else {
-          content.style.maxHeight = content.scrollHeight + "px";
+          content.style.maxHeight = "280px";
         } 
       });
     }
 
     $(document).on('click','#videos',function(){
-        i = this.dataset.bid;
-        getVideos(`https://api.themoviedb.org/3/movie/${i}/videos?api_key=04c35731a5ee918f014970082a0088b1&language=en-US`, i);
-                  
+        if (content.style.maxHeight){
+            i = this.dataset.bid;
+            getVideos(`https://api.themoviedb.org/3/movie/${i}/videos?api_key=04c35731a5ee918f014970082a0088b1&language=en-US`, i);    
+        }        
     })
 
 };

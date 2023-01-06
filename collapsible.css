@@ -69,3 +69,18 @@
 .search-movie-info span.red {
     color: rgb(189, 42, 42);
 }
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 800px) {
+  .collapsible {
+      width: 270px;
+    }
+    
+    .videoContent{
+        width: 270px;
+    }
+
+    .content{
+        width: 270px;
+    }
+}
