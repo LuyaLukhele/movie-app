@@ -1,5 +1,5 @@
 ## Now movie-app
-Discover current movies and their ratings 
+Discover the latest and greatest films and Tv shows with ease on our site. Browse through trending movies and get insights on their ratings, reviews and more. Stay up to date on the biggest blockbusters and find your next favorite film today!"
 
 ## Project Status
 This project is in active development.
